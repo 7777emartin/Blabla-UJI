@@ -79,8 +79,8 @@ public class GestorViajes {
 
 			for (String clave:mapa.keySet()) {
 				JSONObject valor = mapa.get(clave).toJSON();
-				file.write(valor);
-			}
+				file.write(valor.toJSONString());
+				}
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -144,7 +144,6 @@ public class GestorViajes {
 		while (iterator.hasNext()) {
 			JSONObject jSonAux = iterator.next();
 			String codviajeAuxiliar = (String) jSonAux.get("codviaje");
-
 			mapa.put(codviajeAuxiliar,new Viaje(jSonAux));
 		}
 	}
@@ -158,7 +157,18 @@ public class GestorViajes {
 	 */
 	public JSONArray consultaViajes(String origen) {
 		// TODO
-		return null; // MODIFICAR
+
+		JSONArray originTrips = new JSONArray();
+		Iterator<String> iterator = mapa.keySet().iterator();
+
+		while (iterator.hasNext()) {
+			String code = iterator.next();
+			String JsonOrigen = mapa.get(code).getOrigen();
+			if(origen.equals(JsonOrigen))
+				originTrips.add(mapa.get(code));
+
+		}
+		return originTrips;
 	}
 
 
@@ -171,7 +181,14 @@ public class GestorViajes {
 	 */
 	public JSONObject reservaViaje(String codviaje, String codcli) {
 		//TODO
-		return null; // MODIFICAR
+
+		Viaje viajeReservado = mapa.get(codviaje);
+		if(viajeReservado.quedanPlazas()){
+			viajeReservado.anyadePasajero(codcli);
+			return viajeReservado.toJSON();
+		}
+
+		return new JSONObject();
 	}
 
 	/**
@@ -183,7 +200,13 @@ public class GestorViajes {
 	 */
 	public JSONObject anulaReserva(String codviaje, String codcli) {
 		//TODO
-		return null; // MODIFICAR
+
+		Viaje viajeAnular = mapa.get(codviaje);
+		if(!viajeAnular.finalizado()){
+			viajeAnular.borraPasajero(codcli);
+			return viajeAnular.toJSON();
+		}
+		return new JSONObject();
 	}
 
 	/**
@@ -220,7 +243,7 @@ public class GestorViajes {
 	 */
 	public JSONObject ofertaViaje(String codcli, String origen, String destino, String fecha, long precio, long numplazas) {
 		// TODO
-		return null; // MODIFICAR
+		return  new Viaje(codcli, origen, destino, fecha, precio, numplazas).toJSON();
 	}
 
 
@@ -234,6 +257,11 @@ public class GestorViajes {
 	 */
 	public JSONObject borraViaje(String codviaje, String codcli) {
 		//TODO
-		return null; // MODIFICAR
+
+		Viaje viaje = mapa.get(codviaje);
+		if(!viaje.finalizado()){
+			return mapa.remove(codviaje).toJSON();
+		}
+		return new JSONObject(); // MODIFICAR
 	}
 }
