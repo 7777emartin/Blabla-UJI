@@ -63,12 +63,14 @@ public class ViajesLocal {
 			case 1: { // Consultar viajes con un origen dado
 
 				//TODO
-
+				System.out.println("Introoduce el origen");
+				String origen = teclado.nextLine();
+				JSONArray viajesOfertados = gestor.consultaViajes(origen);
+				System.out.println(viajesOfertados.toJSONString());
 				break;
 			}
 
 			case 2: { // Reservar un viaje
-
 				//TODO
 
 				break;

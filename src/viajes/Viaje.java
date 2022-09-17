@@ -45,8 +45,6 @@ public class Viaje implements Serializable {
 		this.precio = precio;
 		this.numplazas = numplazas;
 		this.pasajeros = new Vector<String>();
-		
-		this.codviaje = this.construyeCodviaje();
 
 	}
 
