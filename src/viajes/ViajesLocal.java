@@ -72,7 +72,10 @@ public class ViajesLocal {
 
 			case 2: { // Reservar un viaje
 				//TODO
-
+				System.out.println("Introduce el código del viaje que quieres reservar.");
+				String codViajeReserva = teclado.nextLine();
+				JSONObject viaje = gestor.reservaViaje(codcli,codViajeReserva);
+				System.out.println("Datos del viaje "+viaje.toJSONString());
 				break;
 			}
 
@@ -86,7 +89,19 @@ public class ViajesLocal {
 			case 4: { // Ofertar un viaje
 
 				// TODO
-
+				System.out.println("Por favor rellene los datos que se le pide para reservar un viaje. ");
+				System.out.println("Introduce el Origen");
+				String origenOferta = teclado.nextLine();
+				System.out.println("Introduce el destino ");
+				String destinoOferta = teclado.nextLine();
+				System.out.println("Introduce la fecha con formato dd-MM-yyyy");
+				String fechaOferta = teclado.nextLine();
+				System.out.println("Introduce el Precio en €");
+				long precioOferta = teclado.nextLong();
+				System.out.println("Introduce el número de plazas");
+				long plazasOferta = teclado.nextLong();
+				JSONObject viajeOfertado = new Viaje(codcli, origenOferta, destinoOferta, fechaOferta, precioOferta, plazasOferta).toJSON();
+				System.out.println("Datos del viaje Ofertado " +viajeOfertado.toJSONString());
 				break;
 			}
 

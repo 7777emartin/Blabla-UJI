@@ -75,12 +75,13 @@ public class GestorViajes {
 	private void escribeFichero(FileWriter os) {
 		// TODO
 
-		try (FileWriter file = new FileWriter("viajes.json")) {
-
+		try (FileWriter file = new FileWriter("src/viajes.json")) {
+			JSONArray array = new JSONArray();
 			for (String clave:mapa.keySet()) {
 				JSONObject valor = mapa.get(clave).toJSON();
-				file.write(valor.toJSONString());
+				array.add(valor);
 				}
+			file.write(array.toJSONString());
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -109,7 +110,7 @@ public class GestorViajes {
 
 		viaje = new Viaje("juan", "Castellón", "Cordoba", "07-11-2023", 39, 3);
 		mapa.put(viaje.getCodviaje(), viaje);
-
+		System.out.println(mapa.toString());
 	}
 
 	/**
@@ -139,7 +140,6 @@ public class GestorViajes {
 	 */
 	private void rellenaDiccionario(JSONArray array) {
 		// TODO
-
 		Iterator<JSONObject> iterator = array.iterator();
 		while (iterator.hasNext()) {
 			JSONObject jSonAux = iterator.next();
