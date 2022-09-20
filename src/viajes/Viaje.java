@@ -65,8 +65,9 @@ public class Viaje implements Serializable {
 		numplazas = (Long) jsonViaje.get("numplazas");
 		//pasajeros = (Vector<String>) jsonViaje.get("pasajeros");
 		JSONArray arrayPasajeros = (JSONArray) jsonViaje.get("pasajeros");
+		this.pasajeros = new Vector<String>();
 		for(Object pasajerito: arrayPasajeros)
-			this.pasajeros= (Vector<String>) pasajerito;
+			this.pasajeros.add(pasajerito.toString());
 		codviaje = construyeCodviaje();
 	}
 

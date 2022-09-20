@@ -75,7 +75,7 @@ public class GestorViajes {
 	private void escribeFichero(FileWriter os) {
 		// TODO
 
-		try (FileWriter file = new FileWriter("src/viajes.json")) {
+		try (FileWriter file = new FileWriter("viajes.json")) {
 			JSONArray array = new JSONArray();
 			for (String clave:mapa.keySet()) {
 				JSONObject valor = mapa.get(clave).toJSON();
@@ -181,9 +181,9 @@ public class GestorViajes {
 	 */
 	public JSONObject reservaViaje(String codviaje, String codcli) {
 		//TODO
-
 		Viaje viajeReservado = mapa.get(codviaje);
-		if(viajeReservado.quedanPlazas()){
+
+		if(viajeReservado!=null && viajeReservado.quedanPlazas() ){
 			viajeReservado.anyadePasajero(codcli);
 			return viajeReservado.toJSON();
 		}
@@ -243,6 +243,7 @@ public class GestorViajes {
 	 */
 	public JSONObject ofertaViaje(String codcli, String origen, String destino, String fecha, long precio, long numplazas) {
 		// TODO
+		//hay que tener en cuenta que no se pase con el número de plazas y que las fechas tengan sentido, que no sea el origen y el destino igual y mucho mas
 		return  new Viaje(codcli, origen, destino, fecha, precio, numplazas).toJSON();
 	}
 
@@ -257,9 +258,9 @@ public class GestorViajes {
 	 */
 	public JSONObject borraViaje(String codviaje, String codcli) {
 		//TODO
-
+		//hay que ver que solo el dueño pueda borrarlo.
 		Viaje viaje = mapa.get(codviaje);
-		if(!viaje.finalizado()){
+		if((viaje != null) && !viaje.finalizado()){
 			return mapa.remove(codviaje).toJSON();
 		}
 		return new JSONObject(); // MODIFICAR

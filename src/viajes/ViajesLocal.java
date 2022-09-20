@@ -55,6 +55,8 @@ public class ViajesLocal {
 			opcion = menu(teclado);
 			switch (opcion) {
 			case 0: // Guardar los datos en el fichero y salir del programa
+				gestor.guardaDatos();
+				System.exit(1);
 
 				// TODO
 
@@ -63,8 +65,11 @@ public class ViajesLocal {
 			case 1: { // Consultar viajes con un origen dado
 
 				//TODO
-				System.out.println("Introoduce el origen");
+				System.out.println("Introduce el origen");
 				String origen = teclado.nextLine();
+				//Esto es para que el origen que metan siempre empiece en maúsculas
+				origen.toLowerCase();
+				origen = origen.substring(0, 1).toUpperCase() + origen.substring(1);
 				JSONArray viajesOfertados = gestor.consultaViajes(origen);
 				System.out.println(viajesOfertados.toJSONString());
 				break;
@@ -72,17 +77,20 @@ public class ViajesLocal {
 
 			case 2: { // Reservar un viaje
 				//TODO
-				System.out.println("Introduce el código del viaje que quieres reservar.");
+				System.out.println("Introduce el código del pasajero .");
+				System.out.println("Por favor introduce el código del viaje que quieres hacer la reserva ");
 				String codViajeReserva = teclado.nextLine();
-				JSONObject viaje = gestor.reservaViaje(codcli,codViajeReserva);
+				JSONObject viaje = gestor.reservaViaje(codViajeReserva,codcli);
 				System.out.println("Datos del viaje "+viaje.toJSONString());
 				break;
 			}
 
 			case 3: { // Anular una reserva
-
 				// TODO
-
+				System.out.println("Introduce el código del viaje que quieres anular la reserva.");
+				String codViajeAnular = teclado.nextLine();
+				JSONObject viaje = gestor.anulaReserva(codViajeAnular,codcli);
+				System.out.println("Datos del viaje "+viaje.toJSONString());
 				break;
 			}
 
@@ -106,9 +114,15 @@ public class ViajesLocal {
 			}
 
 			case 5: { // Borrar un viaje ofertado
-
 				// TODO
-
+				System.out.println("Introduce el código del viaje que quieres borrar .");
+				String codViajeBorrar = teclado.nextLine();
+				JSONObject viaje = gestor.borraViaje(codViajeBorrar,codcli);
+				if(viaje.size()==0){
+					System.out.println("Hubo un error y no se ha borrado nada");
+				}else {
+					System.out.println("Datos del viaje borrado" + viaje.toJSONString());
+				}
 				break;
 			}
 
