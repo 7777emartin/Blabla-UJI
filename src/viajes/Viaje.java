@@ -89,13 +89,15 @@ public class Viaje implements Serializable {
 	public JSONObject toJSON() {
 		// TODO
 		JSONObject jsonViajes = new JSONObject();
+		JSONArray arrayPasajeros = new JSONArray();
+		arrayPasajeros.add(pasajeros);
 		jsonViajes.put("codprop",codprop);
 		jsonViajes.put("origen", origen);
 		jsonViajes.put("destino",destino);
 		jsonViajes.put("fecha",fecha);
 		jsonViajes.put("precio", precio);
 		jsonViajes.put("numplazas", numplazas);
-		jsonViajes.put("pasajeros",pasajeros);
+		jsonViajes.put("pasajeros", arrayPasajeros);
 		jsonViajes.put("codviaje" , codviaje);
 		return jsonViajes;
 

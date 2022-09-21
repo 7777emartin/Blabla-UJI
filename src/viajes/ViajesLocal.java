@@ -10,7 +10,7 @@ public class ViajesLocal {
 
 
 	/**
-	 * Muestra el menu de opciones y lee repetidamente de teclado hasta obtener una opcion valida
+	 * Muestra el menu de opciones y lee repetidamente de teclado hasta obtener una opcion válida
 	 * @param teclado	stream para leer la opción elegida de teclado
 	 * @return			opción elegida
 	 */
@@ -67,11 +67,16 @@ public class ViajesLocal {
 				//TODO
 				System.out.println("Introduce el origen");
 				String origen = teclado.nextLine();
-				//Esto es para que el origen que metan siempre empiece en maúsculas
-				origen.toLowerCase();
-				origen = origen.substring(0, 1).toUpperCase() + origen.substring(1);
+				//Esto es para que el origen que metan siempre empiece en mayúsculas, pero no lo vamos a poner porque no funciona otras partes del código
+				/*origen.toLowerCase();
+				origen = origen.substring(0, 1).toUpperCase() + origen.substring(1);*/
 				JSONArray viajesOfertados = gestor.consultaViajes(origen);
-				System.out.println(viajesOfertados.toJSONString());
+				if(viajesOfertados.size()==0){
+					System.out.println("No se ha encontrado viajes desde este origen");
+				}else {
+					System.out.println("Viajes disponibles");
+					System.out.println(viajesOfertados.toJSONString());
+				}
 				break;
 			}
 
@@ -81,7 +86,11 @@ public class ViajesLocal {
 				System.out.println("Por favor introduce el código del viaje que quieres hacer la reserva ");
 				String codViajeReserva = teclado.nextLine();
 				JSONObject viaje = gestor.reservaViaje(codViajeReserva,codcli);
-				System.out.println("Datos del viaje "+viaje.toJSONString());
+				if(viaje.size()==0){
+					System.out.println("error al reservar");
+				}else {
+					System.out.println("Datos del viaje "+viaje.toJSONString());
+				}
 				break;
 			}
 
@@ -90,6 +99,7 @@ public class ViajesLocal {
 				System.out.println("Introduce el código del viaje que quieres anular la reserva.");
 				String codViajeAnular = teclado.nextLine();
 				JSONObject viaje = gestor.anulaReserva(codViajeAnular,codcli);
+				//hay que tocar que esto si se mete un código erróneo que no funcione
 				System.out.println("Datos del viaje "+viaje.toJSONString());
 				break;
 			}
@@ -108,7 +118,7 @@ public class ViajesLocal {
 				long precioOferta = teclado.nextLong();
 				System.out.println("Introduce el número de plazas");
 				long plazasOferta = teclado.nextLong();
-				JSONObject viajeOfertado = new Viaje(codcli, origenOferta, destinoOferta, fechaOferta, precioOferta, plazasOferta).toJSON();
+				JSONObject viajeOfertado = gestor.ofertaViaje(codcli, origenOferta, destinoOferta, fechaOferta, precioOferta, plazasOferta);
 				System.out.println("Datos del viaje Ofertado " +viajeOfertado.toJSONString());
 				break;
 			}

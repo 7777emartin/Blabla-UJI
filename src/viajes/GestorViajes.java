@@ -185,6 +185,7 @@ public class GestorViajes {
 
 		if(viajeReservado!=null && viajeReservado.quedanPlazas() ){
 			viajeReservado.anyadePasajero(codcli);
+			mapa.put(codviaje,viajeReservado);
 			return viajeReservado.toJSON();
 		}
 
@@ -244,7 +245,10 @@ public class GestorViajes {
 	public JSONObject ofertaViaje(String codcli, String origen, String destino, String fecha, long precio, long numplazas) {
 		// TODO
 		//hay que tener en cuenta que no se pase con el número de plazas y que las fechas tengan sentido, que no sea el origen y el destino igual y mucho mas
-		return  new Viaje(codcli, origen, destino, fecha, precio, numplazas).toJSON();
+		Viaje ofertaViaje =new Viaje(codcli, origen, destino, fecha, precio, numplazas);
+		mapa.put(ofertaViaje.getCodviaje(),ofertaViaje);
+		System.out.println("Ahora mismo el mapa esta asi" +mapa.toString());
+		return  ofertaViaje.toJSON();
 	}
 
 
@@ -260,7 +264,7 @@ public class GestorViajes {
 		//TODO
 		//hay que ver que solo el dueño pueda borrarlo.
 		Viaje viaje = mapa.get(codviaje);
-		if((viaje != null) && !viaje.finalizado()){
+		if((viaje != null) ){//&& !viaje.finalizado()
 			return mapa.remove(codviaje).toJSON();
 		}
 		return new JSONObject(); // MODIFICAR
