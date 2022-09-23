@@ -110,7 +110,7 @@ public class GestorViajes {
 
 		viaje = new Viaje("juan", "Castellón", "Cordoba", "07-11-2023", 39, 3);
 		mapa.put(viaje.getCodviaje(), viaje);
-		System.out.println(mapa.toString());
+
 	}
 
 	/**
@@ -163,8 +163,8 @@ public class GestorViajes {
 
 		while (iterator.hasNext()) {
 			String code = iterator.next();
-			String JsonOrigen = mapa.get(code).getOrigen();
-			if(origen.equals(JsonOrigen))
+			String origenJson = mapa.get(code).getOrigen();
+			if(origen.equals(origenJson))
 				originTrips.add(mapa.get(code));
 
 		}
@@ -203,11 +203,11 @@ public class GestorViajes {
 		//TODO
 
 		Viaje viajeAnular = mapa.get(codviaje);
-		if(!viajeAnular.finalizado()){
-			viajeAnular.borraPasajero(codcli);
-			return viajeAnular.toJSON();
+		if(!viajeAnular.finalizado() && !viajeAnular.getPasajeros().contains(codcli) && viajeAnular.getNumplazas()-1 == -1){
+			return new JSONObject();
 		}
-		return new JSONObject();
+		viajeAnular.borraPasajero(codcli);
+		return viajeAnular.toJSON();
 	}
 
 	/**
@@ -244,10 +244,11 @@ public class GestorViajes {
 	 */
 	public JSONObject ofertaViaje(String codcli, String origen, String destino, String fecha, long precio, long numplazas) {
 		// TODO
-		//hay que tener en cuenta que no se pase con el número de plazas y que las fechas tengan sentido, que no sea el origen y el destino igual y mucho mas
-		Viaje ofertaViaje =new Viaje(codcli, origen, destino, fecha, precio, numplazas);
-		mapa.put(ofertaViaje.getCodviaje(),ofertaViaje);
-		System.out.println("Ahora mismo el mapa esta asi" +mapa.toString());
+		if (!es_fecha_valida(fecha) || origen.equals(destino) || precio < 0 || numplazas < 0)
+			return new JSONObject();
+
+		Viaje ofertaViaje = new Viaje(codcli, origen, destino, fecha, precio, numplazas);
+		mapa.put(codcli,ofertaViaje);
 		return  ofertaViaje.toJSON();
 	}
 
@@ -262,11 +263,11 @@ public class GestorViajes {
 	 */
 	public JSONObject borraViaje(String codviaje, String codcli) {
 		//TODO
-		//hay que ver que solo el dueño pueda borrarlo.
+
 		Viaje viaje = mapa.get(codviaje);
-		if((viaje != null) ){//&& !viaje.finalizado()
+		if((viaje != null && viaje.getCodprop().equals(codcli))) //&& !viaje.finalizado())
 			return mapa.remove(codviaje).toJSON();
-		}
-		return new JSONObject(); // MODIFICAR
+
+		return new JSONObject();
 	}
 }

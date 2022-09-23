@@ -65,6 +65,7 @@ public class ViajesLocal {
 			case 1: { // Consultar viajes con un origen dado
 
 				//TODO
+				//Aqui no se si hay que leer los datos cada vez que se usa este caso
 				System.out.println("Introduce el origen");
 				String origen = teclado.nextLine();
 				//Esto es para que el origen que metan siempre empiece en mayúsculas, pero no lo vamos a poner porque no funciona otras partes del código
@@ -87,7 +88,7 @@ public class ViajesLocal {
 				String codViajeReserva = teclado.nextLine();
 				JSONObject viaje = gestor.reservaViaje(codViajeReserva,codcli);
 				if(viaje.size()==0){
-					System.out.println("error al reservar");
+					System.out.println("Error en los datos de la reserva ");
 				}else {
 					System.out.println("Datos del viaje "+viaje.toJSONString());
 				}
@@ -119,7 +120,11 @@ public class ViajesLocal {
 				System.out.println("Introduce el número de plazas");
 				long plazasOferta = teclado.nextLong();
 				JSONObject viajeOfertado = gestor.ofertaViaje(codcli, origenOferta, destinoOferta, fechaOferta, precioOferta, plazasOferta);
-				System.out.println("Datos del viaje Ofertado " +viajeOfertado.toJSONString());
+				if(viajeOfertado.size() != 0){
+					System.out.println("Datos del viaje Ofertado " +viajeOfertado.toJSONString());
+				}else {
+					System.out.println("Error en los datos proporcionados ");
+				}
 				break;
 			}
 
@@ -129,7 +134,7 @@ public class ViajesLocal {
 				String codViajeBorrar = teclado.nextLine();
 				JSONObject viaje = gestor.borraViaje(codViajeBorrar,codcli);
 				if(viaje.size()==0){
-					System.out.println("Hubo un error y no se ha borrado nada");
+					System.out.println("Error al intentar borrar el viaje ");
 				}else {
 					System.out.println("Datos del viaje borrado" + viaje.toJSONString());
 				}
