@@ -65,8 +65,8 @@ public class Viaje implements Serializable {
 		numplazas = (Long) jsonViaje.get("numplazas");
 		JSONArray arrayPasajeros = (JSONArray) jsonViaje.get("pasajeros");
 		this.pasajeros = new Vector<String>();
-		for(Object pasajerito: arrayPasajeros)
-			this.pasajeros.add(pasajerito.toString());
+		for(Object myPasajero : arrayPasajeros)
+			this.pasajeros.add(myPasajero.toString());
 		codviaje = construyeCodviaje();
 	}
 
@@ -88,16 +88,18 @@ public class Viaje implements Serializable {
 	public JSONObject toJSON() {
 		// TODO
 		JSONObject jsonViajes = new JSONObject();
-		JSONArray arrayPasajeros = new JSONArray();
-		for(String pasajeritos: pasajeros)
-			arrayPasajeros.add(pasajeritos);
+		JSONArray jsonArrayPasajeros = new JSONArray();
+
+		for(String myPasajeros : pasajeros)
+			jsonArrayPasajeros.add(myPasajeros);
+
 		jsonViajes.put("codprop",codprop);
 		jsonViajes.put("origen", origen);
 		jsonViajes.put("destino",destino);
 		jsonViajes.put("fecha",fecha);
 		jsonViajes.put("precio", precio);
 		jsonViajes.put("numplazas", numplazas);
-		jsonViajes.put("pasajeros", arrayPasajeros);
+		jsonViajes.put("pasajeros", jsonArrayPasajeros);
 		jsonViajes.put("codviaje" , codviaje);
 		return jsonViajes;
 

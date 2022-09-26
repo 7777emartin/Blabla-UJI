@@ -55,43 +55,41 @@ public class ViajesLocal {
 			opcion = menu(teclado);
 			switch (opcion) {
 			case 0: // Guardar los datos en el fichero y salir del programa
-				gestor.guardaDatos();
-				System.exit(1);
-
 				// TODO
+
+				gestor.guardaDatos();
+				System.out.println("Datos Almacenado correctamente :) ");
+				System.exit(1);
 
 				break;
 
 			case 1: { // Consultar viajes con un origen dado
 
 				//TODO
-				//Aqui no se si hay que leer los datos cada vez que se usa este caso
+
 				System.out.println("Introduce el origen");
 				String origen = teclado.nextLine();
-				//Esto es para que el origen que metan siempre empiece en mayúsculas, pero no lo vamos a poner porque no funciona otras partes del código
-				/*origen.toLowerCase();
-				origen = origen.substring(0, 1).toUpperCase() + origen.substring(1);*/
 				JSONArray viajesOfertados = gestor.consultaViajes(origen);
-				if(viajesOfertados.size()==0){
+
+				if(viajesOfertados.size()==0)
 					System.out.println("No se ha encontrado viajes desde este origen");
-				}else {
-					System.out.println("Viajes disponibles");
-					System.out.println(viajesOfertados.toJSONString());
-				}
+				else
+					System.out.println("Viajes disponibles"+"\n"+viajesOfertados.toJSONString());
+
 				break;
 			}
 
 			case 2: { // Reservar un viaje
 				//TODO
-				System.out.println("Introduce el código del pasajero .");
+
 				System.out.println("Por favor introduce el código del viaje que quieres hacer la reserva ");
 				String codViajeReserva = teclado.nextLine();
 				JSONObject viaje = gestor.reservaViaje(codViajeReserva,codcli);
-				if(viaje.size()==0){
+				if(viaje.size()==0)
 					System.out.println("Error en los datos de la reserva ");
-				}else {
-					System.out.println("Datos del viaje "+viaje.toJSONString());
-				}
+				else
+					System.out.println("Datos del viaje reservado "+viaje.toJSONString());
+
 				break;
 			}
 
@@ -100,8 +98,10 @@ public class ViajesLocal {
 				System.out.println("Introduce el código del viaje que quieres anular la reserva.");
 				String codViajeAnular = teclado.nextLine();
 				JSONObject viaje = gestor.anulaReserva(codViajeAnular,codcli);
-				//hay que tocar que esto si se mete un código erróneo que no funcione
-				System.out.println("Datos del viaje "+viaje.toJSONString());
+				if(viaje.size()!=0)
+					System.out.println("Datos de la reserva anulada ->"+viaje.toJSONString());
+				else
+					System.out.println("Error al intentar anular la reserva ");
 				break;
 			}
 
@@ -120,24 +120,26 @@ public class ViajesLocal {
 				System.out.println("Introduce el número de plazas");
 				long plazasOferta = teclado.nextLong();
 				JSONObject viajeOfertado = gestor.ofertaViaje(codcli, origenOferta, destinoOferta, fechaOferta, precioOferta, plazasOferta);
-				if(viajeOfertado.size() != 0){
-					System.out.println("Datos del viaje Ofertado " +viajeOfertado.toJSONString());
-				}else {
+
+				if(viajeOfertado.size() != 0)
+					System.out.println("Datos del viaje Ofertado ->" +viajeOfertado.toJSONString());
+				else
 					System.out.println("Error en los datos proporcionados ");
-				}
+
 				break;
 			}
 
 			case 5: { // Borrar un viaje ofertado
 				// TODO
-				System.out.println("Introduce el código del viaje que quieres borrar .");
+
+				System.out.println("Introduce el código del viaje que quieres borrar ");
 				String codViajeBorrar = teclado.nextLine();
 				JSONObject viaje = gestor.borraViaje(codViajeBorrar,codcli);
-				if(viaje.size()==0){
+				if(viaje.size()==0)
 					System.out.println("Error al intentar borrar el viaje ");
-				}else {
-					System.out.println("Datos del viaje borrado" + viaje.toJSONString());
-				}
+				else
+					System.out.println("Datos del viaje borrado ->" + viaje.toJSONString());
+
 				break;
 			}
 

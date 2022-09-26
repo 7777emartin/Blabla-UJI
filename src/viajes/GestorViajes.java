@@ -74,7 +74,7 @@ public class GestorViajes {
 	 */
 	private void escribeFichero(FileWriter os) {
 		// TODO
-
+		//Se guarda en path local, por lo que no depende del path de la máquina.
 		try (FileWriter file = new FileWriter("viajes.json")) {
 			JSONArray array = new JSONArray();
 			for (String clave:mapa.keySet()) {
@@ -140,11 +140,12 @@ public class GestorViajes {
 	 */
 	private void rellenaDiccionario(JSONArray array) {
 		// TODO
+
 		Iterator<JSONObject> iterator = array.iterator();
 		while (iterator.hasNext()) {
 			JSONObject jSonAux = iterator.next();
-			String codviajeAuxiliar = (String) jSonAux.get("codviaje");
-			mapa.put(codviajeAuxiliar,new Viaje(jSonAux));
+			String codviajeAux = (String) jSonAux.get("codviaje");
+			mapa.put(codviajeAux, new Viaje(jSonAux));
 		}
 	}
 
@@ -158,17 +159,17 @@ public class GestorViajes {
 	public JSONArray consultaViajes(String origen) {
 		// TODO
 
-		JSONArray originTrips = new JSONArray();
+		JSONArray arrayViajesOrigen = new JSONArray();
 		Iterator<String> iterator = mapa.keySet().iterator();
 
 		while (iterator.hasNext()) {
 			String code = iterator.next();
 			String origenJson = mapa.get(code).getOrigen();
 			if(origen.equals(origenJson))
-				originTrips.add(mapa.get(code));
+				arrayViajesOrigen.add(mapa.get(code));
 
 		}
-		return originTrips;
+		return arrayViajesOrigen;
 	}
 
 
@@ -181,9 +182,9 @@ public class GestorViajes {
 	 */
 	public JSONObject reservaViaje(String codviaje, String codcli) {
 		//TODO
-		Viaje viajeReservado = mapa.get(codviaje);
 
-		if(viajeReservado!=null && viajeReservado.quedanPlazas() ){
+		Viaje viajeReservado = mapa.get(codviaje);
+		if(viajeReservado!=null && viajeReservado.quedanPlazas()){ // && !codcli.equals(viajeReservado.getCodprop() -> Respuesta de por qué está comentado. Fichero->@Respuestas_BancoPruebas
 			viajeReservado.anyadePasajero(codcli);
 			mapa.put(codviaje,viajeReservado);
 			return viajeReservado.toJSON();
@@ -203,7 +204,7 @@ public class GestorViajes {
 		//TODO
 
 		Viaje viajeAnular = mapa.get(codviaje);
-		if(!viajeAnular.finalizado() && !viajeAnular.getPasajeros().contains(codcli) && viajeAnular.getNumplazas()-1 == -1){
+		if(viajeAnular == null || viajeAnular.finalizado() || !viajeAnular.getPasajeros().contains(codcli)){
 			return new JSONObject();
 		}
 		viajeAnular.borraPasajero(codcli);
@@ -244,11 +245,12 @@ public class GestorViajes {
 	 */
 	public JSONObject ofertaViaje(String codcli, String origen, String destino, String fecha, long precio, long numplazas) {
 		// TODO
-		if (!es_fecha_valida(fecha) || origen.equals(destino) || precio < 0 || numplazas < 0)
+
+		if (!es_fecha_valida(fecha) || origen.equals(destino) || precio < 0 || numplazas <= 0)
 			return new JSONObject();
 
 		Viaje ofertaViaje = new Viaje(codcli, origen, destino, fecha, precio, numplazas);
-		mapa.put(codcli,ofertaViaje);
+		mapa.put(ofertaViaje.getCodviaje(),ofertaViaje);
 		return  ofertaViaje.toJSON();
 	}
 
@@ -265,7 +267,7 @@ public class GestorViajes {
 		//TODO
 
 		Viaje viaje = mapa.get(codviaje);
-		if((viaje != null && viaje.getCodprop().equals(codcli))) //&& !viaje.finalizado())
+		if((viaje != null && viaje.getCodprop().equals(codcli)) && !viaje.finalizado())
 			return mapa.remove(codviaje).toJSON();
 
 		return new JSONObject();

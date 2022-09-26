@@ -1,0 +1,10 @@
+Aquí se van a responder algunas de las cuestiones que se preguntan en el Banco de pruebas.
+5. Oferta un nuevo viaje. ¿Aparece cuando consultas los viajes de su origen? ¿Se ha añadido al fichero en el que se guardan los datos? ¿Por qué?
+    - Sí, esta si aparecen en el mapa, que es donde se almacenan los datos temporales antes de ser guardados en el fichero, por esta razón no aparece en el fichero
+        ya que como se indica en el enunciado, sólo se guardan los datos en el fichero cuando el usuario usa el caso 0.
+6. Intenta reservar el viaje que acabas de ofertar. ¿Deberías poder reservarlo?
+    -En mi caso, si que he dejado la opción, pero se puede desactivar eliminando los comentarios, ya que he pensado si en el último momento el propietario necesita una plaza, que lo pueda reservar
+        ya que no está la opción de editar el viaje y eliminar una plaza sobrante, ya que sería eliminarlo y crearlo de nuevo, algo que haría perder a los pasajeros.
+8. ¿Puede el segundo cliente ver el viaje ofertado por el primero? ¿Por qué?
+    -No, porque como he explicado en la pregunta 5, hasta que no se guarda en el fichero, que es desde los nuevos usuarios obtienen la información no se actualiza para los demás.
+Las pregunta 9-10-11, siguen el mismo patrón, es decir todos los actos de cada usuario es invisible para los demás hasta que actualiza el fichero "case 0 ".
