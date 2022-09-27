@@ -71,10 +71,15 @@ public class ViajesLocal {
 				String origen = teclado.nextLine();
 				JSONArray viajesOfertados = gestor.consultaViajes(origen);
 
-				if(viajesOfertados.size()==0)
+				if(viajesOfertados.size()==0) {
 					System.out.println("No se ha encontrado viajes desde este origen");
-				else
-					System.out.println("Viajes disponibles"+"\n"+viajesOfertados.toJSONString());
+				}else {
+
+					//System.out.println("Viajes disponibles" + "\n" + viajesOfertados.toJSONString());
+					for(Object viaje: viajesOfertados){
+						System.out.println(viaje.toString());
+					}
+				}
 
 				break;
 			}

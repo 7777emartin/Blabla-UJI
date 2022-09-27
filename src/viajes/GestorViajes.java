@@ -184,9 +184,7 @@ public class GestorViajes {
 		//TODO
 
 		Viaje viajeReservado = mapa.get(codviaje);
-		if(viajeReservado!=null && viajeReservado.quedanPlazas()){ // && !codcli.equals(viajeReservado.getCodprop() -> Respuesta de por qué está comentado. Fichero->@Respuestas_BancoPruebas
-			viajeReservado.anyadePasajero(codcli);
-			mapa.put(codviaje,viajeReservado);
+		if(viajeReservado!=null && viajeReservado.anyadePasajero(codcli)){ // && !codcli.equals(viajeReservado.getCodprop() -> Respuesta de por qué está comentado. Fichero->@Respuestas_BancoPruebas
 			return viajeReservado.toJSON();
 		}
 
